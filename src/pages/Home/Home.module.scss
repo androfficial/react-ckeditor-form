@@ -1,0 +1,93 @@
+.root {
+  height: 100%;
+  padding: 40px 0;
+}
+
+.container {
+  height: 100%;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  max-width: 400px;
+  height: 100%;
+  margin: 0 auto;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  color: var(--color-primary);
+  background-color: var(--color-secondary);
+  border-radius: 10px;
+}
+
+.inputWrapper {
+  margin-bottom: 32px;
+}
+
+.input {
+  &:global(.MuiFormControl-root) {
+    :global(.MuiFormHelperText-root) {
+      &:global(.Mui-error) {
+        position: absolute;
+        top: 100%;
+        bottom: 0;
+        left: 0;
+      }
+    }
+  }
+}
+
+.ckeditorWrapper {
+  margin-bottom: 24px;
+}
+
+.ckeditorError {
+  min-height: 20px;
+  margin-top: 3px;
+  margin-right: 14px;
+  margin-bottom: 0;
+  margin-left: 14px;
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 400;
+  line-height: 1.66;
+  color: #d32f2f;
+  text-align: left;
+  letter-spacing: 0.03333em;
+}
+
+.filesButtonWrapper {
+  margin-bottom: 12px;
+}
+
+.uploadedFilesWrapper {
+}
+
+.fileWrapper {
+  display: flex;
+  column-gap: 15px;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+}
+
+.fileName {
+  flex: 1 1 auto;
+  word-break: break-word;
+}
+
+.closeIconButton {
+  flex: 0 0 40px;
+}
+
+.buttonWrapper {
+}
+
+.sendButton {
+}
