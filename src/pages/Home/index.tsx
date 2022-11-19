@@ -113,9 +113,9 @@ export const Home = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.fromname}
-                error={Boolean(errors.fromname && touched.fromname)}
+                error={Boolean(touched.fromname && errors.fromname)}
                 helperText={
-                  errors.fromname && touched.fromname && errors.fromname
+                  touched.fromname && errors.fromname && errors.fromname
                 }
                 fullWidth
               />
@@ -132,9 +132,9 @@ export const Home = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.fromaddr}
-                error={Boolean(errors.fromaddr && touched.fromaddr)}
+                error={Boolean(touched.fromaddr && errors.fromaddr)}
                 helperText={
-                  errors.fromaddr && touched.fromaddr && errors.fromaddr
+                  touched.fromaddr && errors.fromaddr && errors.fromaddr
                 }
                 fullWidth
               />
@@ -151,8 +151,8 @@ export const Home = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.to}
-                error={Boolean(errors.to && touched.to)}
-                helperText={errors.to && touched.to && errors.to}
+                error={Boolean(touched.to && errors.to)}
+                helperText={touched.to && errors.to && errors.to}
                 fullWidth
               />
             </div>
@@ -167,8 +167,8 @@ export const Home = () => {
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.subject}
-                error={Boolean(errors.subject && touched.subject)}
-                helperText={errors.subject && touched.subject && errors.subject}
+                error={Boolean(touched.subject && errors.subject)}
+                helperText={touched.subject && errors.subject && errors.subject}
                 fullWidth
               />
             </div>
@@ -194,12 +194,14 @@ export const Home = () => {
                   });
                 }}
                 onChange={(event, editor) =>
-                  setFieldValue('template', editor.getData())
+                  setFieldValue('template', editor.getData(), true)
                 }
-                onBlur={(event, editor) => setFieldTouched('template', true)}
+                onBlur={(event, editor) =>
+                  setFieldTouched('template', true, true)
+                }
               />
               <p className={s.ckeditorError}>
-                {errors.template && touched.template && errors.template}
+                {touched.template && errors.template && errors.template}
               </p>
             </div>
             <div className={s.filesButtonWrapper}>
