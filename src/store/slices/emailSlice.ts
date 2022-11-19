@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { postLetter } from 'api/email';
 import { IFormValues } from 'types';
 
@@ -7,6 +7,10 @@ export const sendLetter = createAsyncThunk(
   async (payload: IFormValues, { rejectWithValue }) => {
     try {
       const response = await postLetter(payload);
+
+      if (!response.data.ok) {
+        throw new Error();
+      }
 
       return response.data;
     } catch (error: any) {
@@ -22,7 +26,11 @@ const initialState = {
 export const emailSlice = createSlice({
   name: 'email',
   initialState,
-  reducers: {},
+  reducers: {
+    setEmailStatus: (state, action: PayloadAction<string>) => {
+      state.status = action.payload;
+    },
+  },
   extraReducers: {
     [sendLetter.pending.type]: (state) => {
       state.status = 'loading';
@@ -35,5 +43,7 @@ export const emailSlice = createSlice({
     },
   },
 });
+
+export const { setEmailStatus } = emailSlice.actions;
 
 export default emailSlice.reducer;
