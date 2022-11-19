@@ -15,7 +15,7 @@
     "format:fix": "prettier -w . --ignore-path .gitignore"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^35.3.1",
+    "@ckeditor/ckeditor5-build-decoupled-document": "^35.3.1",
     "@ckeditor/ckeditor5-core": "^35.3.1",
     "@ckeditor/ckeditor5-react": "^5.0.2",
     "@ckeditor/ckeditor5-utils": "^35.3.1",
