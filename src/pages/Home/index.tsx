@@ -46,7 +46,6 @@ export const Home = () => {
   );
 
   const {
-    dirty,
     values,
     errors,
     touched,
@@ -63,6 +62,9 @@ export const Home = () => {
     onSubmit: (values) => {
       dispatch(sendLetter(values));
     },
+    validateOnBlur: true,
+    validateOnMount: true,
+    validateOnChange: true,
     enableReinitialize: true,
   });
 
@@ -229,7 +231,7 @@ export const Home = () => {
             <div className={s.buttonWrapper}>
               <LoadingButton
                 classes={{ root: s.sendButton }}
-                disabled={!(isValid && dirty)}
+                disabled={!isValid}
                 loading={emailStatus === 'loading'}
                 onClick={() => handleSubmit()}
                 endIcon={<SendIcon />}
