@@ -1,4 +1,4 @@
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+import DecoupledEditor from '@ckeditor/ckeditor5-build-decoupled-document';
 import { CKEditor } from '@ckeditor/ckeditor5-react';
 import AttachmentIcon from '@mui/icons-material/Attachment';
 import CloseIcon from '@mui/icons-material/Close';
@@ -24,7 +24,7 @@ export const Home = () => {
     fromaddr: '',
     to: '',
     subject: '',
-    template: 'Enter the desired text of the letter',
+    template: '',
     files: [],
   });
 
@@ -64,7 +64,7 @@ export const Home = () => {
     },
   });
 
-  const handleInputFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleInputFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
     if (e.target.files) {
       const selectedFile = e.target.files[0];
 
@@ -74,7 +74,7 @@ export const Home = () => {
     }
   };
 
-  const onClickDeleteButton = (fileName: string) => {
+  const onClickDeleteButton = (fileName: string): void => {
     setFieldValue(
       'files',
       values.files.filter((file) => file.name !== fileName)
@@ -160,9 +160,15 @@ export const Home = () => {
               <CKEditor
                 name='template'
                 disabled={emailStatus === 'loading'}
-                editor={ClassicEditor}
+                editor={DecoupledEditor}
                 data={values.template}
                 onReady={(editor) => {
+                  editor.ui
+                    .getEditableElement()
+                    .parentElement.insertBefore(
+                      editor.ui.view.toolbar.element,
+                      editor.ui.getEditableElement()
+                    );
                   editor.editing.view.change((writer: any) => {
                     writer.setStyle(
                       'min-height',

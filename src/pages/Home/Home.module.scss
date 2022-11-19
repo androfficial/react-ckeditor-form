@@ -45,6 +45,14 @@
 
 .ckeditorWrapper {
   margin-bottom: 24px;
+  :global(.ck-toolbar) {
+    border-bottom-width: 0;
+    border-radius: 2px 2px 0 0 !important;
+  }
+  :global(.ck-content) {
+    border-color: var(--ck-color-toolbar-border);
+    border-radius: 0 0 2px 2px !important;
+  }
 }
 
 .ckeditorError {
