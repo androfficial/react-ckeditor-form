@@ -7,9 +7,10 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Button, IconButton, TextField } from '@mui/material';
 import cn from 'classnames';
 import { useFormik } from 'formik';
+import { useSaveFormValues } from 'hooks/useSaveFormValues';
 import { useAppDispatch, useAppSelector } from 'hooks/useStore';
-import { ChangeEvent, useMemo, useState } from 'react';
-import { sendLetter } from 'store/slices/emailSlice';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { sendLetter, setEmailStatus } from 'store/slices/emailSlice';
 import { IFormValues } from 'types';
 import * as Yup from 'yup';
 
@@ -50,9 +51,9 @@ export const Home = () => {
     errors,
     touched,
     isValid,
+    resetForm,
     handleChange,
     handleBlur,
-    handleReset,
     handleSubmit,
     setFieldValue,
     setFieldTouched,
@@ -62,7 +63,10 @@ export const Home = () => {
     onSubmit: (values) => {
       dispatch(sendLetter(values));
     },
+    enableReinitialize: true,
   });
+
+  useSaveFormValues(values, setInitialValues);
 
   const handleInputFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
     if (e.target.files) {
@@ -80,6 +84,16 @@ export const Home = () => {
       values.files.filter((file) => file.name !== fileName)
     );
   };
+
+  useEffect(() => {
+    if (emailStatus === 'success') {
+      localStorage.removeItem(window.location.pathname);
+      resetForm();
+      // eslint-disable-next-line no-alert
+      alert('Email sent successfully!');
+      dispatch(setEmailStatus('idle'));
+    }
+  }, [dispatch, resetForm, emailStatus]);
 
   return (
     <section className={s.root}>
