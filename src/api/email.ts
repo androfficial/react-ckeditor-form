@@ -1,7 +1,7 @@
 import { axiosInstance } from 'api/instance';
-import { IFormValues } from 'types';
+import { IFormValuesRequest } from 'types';
 
-export const postLetter = (body: IFormValues) =>
-  axiosInstance.post('/ajax/email_send.php', null, {
-    params: body,
+export const postLetter = ({ queryData, files }: IFormValuesRequest) =>
+  axiosInstance.post('/ajax/email_send.php', files, {
+    params: queryData,
   });

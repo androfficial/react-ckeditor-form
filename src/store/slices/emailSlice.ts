@@ -1,10 +1,10 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { postLetter } from 'api/email';
-import { IFormValues } from 'types';
+import { IFormValuesRequest } from 'types';
 
 export const sendLetter = createAsyncThunk(
   'email/sendLetter',
-  async (payload: IFormValues, { rejectWithValue }) => {
+  async (payload: IFormValuesRequest, { rejectWithValue }) => {
     try {
       const response = await postLetter(payload);
 

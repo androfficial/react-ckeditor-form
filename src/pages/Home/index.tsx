@@ -7,6 +7,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Button, IconButton, TextField } from '@mui/material';
 import cn from 'classnames';
 import { useFormik } from 'formik';
+import { createFormData } from 'helpers/createFormData';
 import { useSaveFormValues } from 'hooks/useSaveFormValues';
 import { useAppDispatch, useAppSelector } from 'hooks/useStore';
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
@@ -60,7 +61,18 @@ export const Home = () => {
     validationSchema,
     initialValues,
     onSubmit: (values) => {
-      dispatch(sendLetter(values));
+      dispatch(
+        sendLetter({
+          queryData: {
+            fromname: values.fromname,
+            fromaddr: values.fromaddr,
+            to: values.to,
+            subject: values.subject,
+            template: values.template,
+          },
+          files: createFormData(values.files),
+        })
+      );
     },
     validateOnBlur: true,
     validateOnMount: true,
