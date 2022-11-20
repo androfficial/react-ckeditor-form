@@ -17,3 +17,20 @@ export interface IFormValuesRequest {
   };
   files: FormData | null;
 }
+
+export interface ILetterData {
+  fromname: string;
+  fromaddr: string;
+  to: string;
+  subject: string;
+  template: string;
+}
+
+export interface ILetterRes {
+  files: any[];
+  ok: boolean;
+  error: string;
+  files2: any;
+  files3: any;
+  r: ILetterData;
+}
