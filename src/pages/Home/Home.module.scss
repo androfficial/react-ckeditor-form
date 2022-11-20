@@ -24,6 +24,9 @@
   color: var(--color-primary);
   background-color: var(--color-secondary);
   border-radius: 10px;
+  @media (max-width: 480px) {
+    padding: 15px;
+  }
 }
 
 .inputWrapper {
