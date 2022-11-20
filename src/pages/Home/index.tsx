@@ -84,18 +84,14 @@ export const Home = () => {
 
   const handleInputFileChange = (e: ChangeEvent<HTMLInputElement>): void => {
     if (e.target.files) {
-      const selectedFile = e.target.files[0];
-
-      if (!values.files.some((file) => file.name === selectedFile.name)) {
-        setFieldValue('files', [...values.files, selectedFile]);
-      }
+      setFieldValue('files', [...values.files, ...Array.from(e.target.files)]);
     }
   };
 
-  const onClickDeleteButton = (fileName: string): void => {
+  const onClickDeleteButton = (fileIndex: number): void => {
     setFieldValue(
       'files',
-      values.files.filter((file) => file.name !== fileName)
+      values.files.filter((_, i) => i !== fileIndex)
     );
   };
 
@@ -224,17 +220,22 @@ export const Home = () => {
                 fullWidth
               >
                 Upload File
-                <input onChange={handleInputFileChange} type='file' hidden />
+                <input
+                  onChange={handleInputFileChange}
+                  type='file'
+                  multiple
+                  hidden
+                />
               </Button>
             </div>
             {values.files.length !== 0 && (
               <div className={s.uploadedFilesWrapper}>
-                {values.files.map((file) => (
-                  <div key={file.name} className={s.fileWrapper}>
+                {values.files.map((file, i) => (
+                  <div key={`${file.name}: ${i}`} className={s.fileWrapper}>
                     <p className={s.fileName}>{file.name}</p>
                     <IconButton
                       classes={{ root: s.closeIconButton }}
-                      onClick={() => onClickDeleteButton(file.name)}
+                      onClick={() => onClickDeleteButton(i)}
                     >
                       <CloseIcon />
                     </IconButton>
