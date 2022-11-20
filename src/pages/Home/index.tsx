@@ -100,10 +100,10 @@ export const Home = () => {
       localStorage.removeItem(window.location.pathname);
       resetForm();
       // eslint-disable-next-line no-alert
-      alert('Email sent successfully!');
+      alert(`The letter was successfully sent to the email: ${values.to}`);
       dispatch(setEmailStatus('idle'));
     }
-  }, [dispatch, resetForm, emailStatus]);
+  }, [emailStatus, dispatch, resetForm, values.to]);
 
   return (
     <section className={s.root}>
