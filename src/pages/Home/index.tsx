@@ -9,18 +9,16 @@ import cn from 'classnames';
 import { useFormik } from 'formik';
 import { createFormData } from 'helpers/createFormData';
 import { useSaveFormValues } from 'hooks/useSaveFormValues';
-import { useAppDispatch, useAppSelector } from 'hooks/useStore';
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
-import { sendLetter, setEmailStatus } from 'store/slices/emailSlice';
+import { ChangeEvent, useMemo, useState } from 'react';
+import { useCreateLetterMutation } from 'store/email/emailApi';
 import { IFormValues } from 'types';
 import * as Yup from 'yup';
 
 import s from './Home.module.scss';
 
 export const Home = () => {
-  const dispatch = useAppDispatch();
+  const [createLetter, { isLoading }] = useCreateLetterMutation();
 
-  const emailStatus = useAppSelector(({ email }) => email.status);
   const [initialValues, setInitialValues] = useState<IFormValues>({
     fromname: '',
     fromaddr: '',
@@ -60,9 +58,9 @@ export const Home = () => {
   } = useFormik({
     validationSchema,
     initialValues,
-    onSubmit: (values) => {
-      dispatch(
-        sendLetter({
+    onSubmit: async (values) => {
+      try {
+        const response = await createLetter({
           queryData: {
             fromname: values.fromname,
             fromaddr: values.fromaddr,
@@ -71,8 +69,17 @@ export const Home = () => {
             template: values.template,
           },
           files: createFormData(values.files),
-        })
-      );
+        }).unwrap();
+
+        if (response.ok) {
+          localStorage.removeItem(window.location.pathname);
+          resetForm();
+          // eslint-disable-next-line no-alert
+          alert(`The letter was successfully sent to the email: ${values.to}`);
+        }
+      } catch (error) {
+        console.error('rejected', error);
+      }
     },
     validateOnBlur: true,
     validateOnMount: true,
@@ -95,16 +102,6 @@ export const Home = () => {
     );
   };
 
-  useEffect(() => {
-    if (emailStatus === 'success') {
-      localStorage.removeItem(window.location.pathname);
-      resetForm();
-      // eslint-disable-next-line no-alert
-      alert(`The letter was successfully sent to the email: ${values.to}`);
-      dispatch(setEmailStatus('idle'));
-    }
-  }, [emailStatus, dispatch, resetForm, values.to]);
-
   return (
     <section className={s.root}>
       <div className={cn('container', s.container)}>
@@ -117,7 +114,7 @@ export const Home = () => {
                 label='Sender name'
                 placeholder='Sender name'
                 variant='outlined'
-                disabled={emailStatus === 'loading'}
+                disabled={isLoading}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.fromname}
@@ -136,7 +133,7 @@ export const Home = () => {
                 label='Sender email'
                 placeholder='Sender email'
                 variant='outlined'
-                disabled={emailStatus === 'loading'}
+                disabled={isLoading}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.fromaddr}
@@ -155,7 +152,7 @@ export const Home = () => {
                 label='Recipient email'
                 placeholder='Recipient email'
                 variant='outlined'
-                disabled={emailStatus === 'loading'}
+                disabled={isLoading}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.to}
@@ -171,7 +168,7 @@ export const Home = () => {
                 label='Letter subject'
                 placeholder='Letter subject'
                 variant='outlined'
-                disabled={emailStatus === 'loading'}
+                disabled={isLoading}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.subject}
@@ -183,7 +180,7 @@ export const Home = () => {
             <div className={s.ckeditorWrapper}>
               <CKEditor
                 name='template'
-                disabled={emailStatus === 'loading'}
+                disabled={isLoading}
                 editor={DecoupledEditor}
                 data={values.template}
                 onReady={(editor) => {
@@ -247,7 +244,7 @@ export const Home = () => {
               <LoadingButton
                 classes={{ root: s.sendButton }}
                 disabled={!isValid}
-                loading={emailStatus === 'loading'}
+                loading={isLoading}
                 onClick={() => handleSubmit()}
                 endIcon={<SendIcon />}
                 variant='contained'

@@ -15,7 +15,7 @@ export interface IFormValuesRequest {
     subject: string;
     template: string;
   };
-  files: FormData | null;
+  files: FormData | undefined;
 }
 
 export interface ILetterData {
