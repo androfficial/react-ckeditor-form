@@ -1,5 +1,5 @@
-export const createFormData = (files: File[]): FormData | null => {
-  if (!files.length) return null;
+export const createFormData = (files: File[]): FormData | undefined => {
+  if (!files.length) return undefined;
 
   const formData = new FormData();
 

@@ -1,12 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { rootReducer } from 'store/slices';
+import { emailApi } from 'store/email/emailApi';
+import { rootReducer } from 'store/reducers';
 
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware({
-      serializableCheck: false,
-    }),
+    getDefaultMiddleware().concat(emailApi.middleware),
 });
 
 export type AppDispatch = typeof store.dispatch;

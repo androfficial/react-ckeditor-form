@@ -1,9 +1,8 @@
 import { combineReducers } from '@reduxjs/toolkit';
-
-import email from './emailSlice';
+import { emailApi } from 'store/email/emailApi';
 
 export const rootReducer = combineReducers({
-  email,
+  [emailApi.reducerPath]: emailApi.reducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;
