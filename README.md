@@ -2,7 +2,7 @@
 
 Single-page email form: fill in the sender and the recipient, write the letter in a rich text editor, attach files and send it through an external mail endpoint. Built in November 2022.
 
-**Live demo:** [react-ckeditor-form.vercel.app](https://react-ckeditor-form.vercel.app)
+**Live demo:** [react-email-composer.vercel.app](https://react-email-composer.vercel.app)
 
 ## Features
 
